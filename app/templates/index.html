@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Bowling Coach</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🎳 AI Bowling Game Analyzer</h1>
+
+    <div class="card">
+      <h2>Enter Round Score</h2>
+      <p class="round-indicator">Current Round: <span>{{ current_round }}</span></p>
+
+      <form action="/submit" method="post" class="form-grid">
+        <div class="field">
+          <label for="first_throw">First Throw</label>
+          <input
+            type="number"
+            id="first_throw"
+            name="first_throw"
+            min="0"
+            max="10"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="second_throw">Second Throw</label>
+          <input
+            type="number"
+            id="second_throw"
+            name="second_throw"
+            min="0"
+            max="10"
+            required
+          />
+        </div>
+
+        <div class="button-row">
+          <button type="submit" class="btn btn-green">Submit Round</button>
+        </div>
+      </form>
+
+      <form action="/restart" method="post" class="restart-form">
+        <button type="submit" class="btn btn-red">Restart Game</button>
+      </form>
+
+      {% if message %}
+        <div class="message {{ message_type }}">{{ message }}</div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h2>Round Summary</h2>
+      {% if rounds_scores %}
+        <table>
+          <thead>
+            <tr>
+              <th>Round</th>
+              <th>First Throw</th>
+              <th>Second Throw</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for round_num, first_throw, second_throw, result in rounds_scores %}
+              <tr>
+                <td>{{ round_num }}</td>
+                <td>{{ first_throw }}</td>
+                <td>{{ second_throw }}</td>
+                <td>{{ result }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p>No rounds submitted yet.</p>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <h2>AI Game Analysis</h2>
+      {% if explanation %}
+        <div class="analysis-box">{{ explanation }}</div>
+      {% else %}
+        <p>Complete all 10 rounds to generate the AI analysis.</p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>
